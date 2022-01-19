@@ -13,10 +13,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using T2010A_WEBAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
 namespace T2010A_WEBAPI
 {
     public class Startup
     {
+        readonly string MyAllowOrigins = "_myAllowOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -30,8 +35,29 @@ namespace T2010A_WEBAPI
             // them ket noi db
             var connectionString = Configuration.GetConnectionString("T2010A");
             services.AddDbContextPool<T2010AContext>(options => options.UseSqlServer(connectionString));
+            // add CORS
+            services.AddCors(options=> {
+                options.AddPolicy(name: MyAllowOrigins,
+                    builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+                    );
+            });
 
             services.AddControllers();
+            // add Authorize with jwt
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
+                options=> {
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidIssuer = Configuration["Jwt:Issuer"],
+                        ValidAudience = Configuration["Jwt:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                    };
+                });
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "T2010A_WEBAPI", Version = "v1" });
@@ -51,7 +77,8 @@ namespace T2010A_WEBAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseCors(MyAllowOrigins);
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

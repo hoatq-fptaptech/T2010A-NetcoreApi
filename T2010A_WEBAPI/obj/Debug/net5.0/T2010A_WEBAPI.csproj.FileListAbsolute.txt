@@ -133,3 +133,4 @@ C:\Aptech\SEM3\T2010A_EAP\T2010A_WEBAPI\T2010A_WEBAPI\bin\Debug\net5.0\zh-Hans\M
 C:\Aptech\SEM3\T2010A_EAP\T2010A_WEBAPI\T2010A_WEBAPI\bin\Debug\net5.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Aptech\SEM3\T2010A_EAP\T2010A_WEBAPI\T2010A_WEBAPI\bin\Debug\net5.0\runtimes\win-arm\lib\net5.0\dotnet-aspnet-codegenerator-design.exe
 C:\Aptech\SEM3\T2010A_EAP\T2010A_WEBAPI\T2010A_WEBAPI\bin\Debug\net5.0\runtimes\win-arm64\lib\net5.0\dotnet-aspnet-codegenerator-design.exe
+C:\Aptech\SEM3\T2010A_EAP\T2010A_WEBAPI\T2010A_WEBAPI\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
